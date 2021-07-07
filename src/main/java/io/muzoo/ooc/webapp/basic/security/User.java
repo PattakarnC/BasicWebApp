@@ -2,16 +2,19 @@ package io.muzoo.ooc.webapp.basic.security;
 
 public class User {
 
+    private long id;
     private String username;
-
     private String password;
+    private String displayName;
 
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(long id, String username, String password, String displayName) {
+        this.id = id;
         this.username = username;
         this.password = password;
+        this.displayName = displayName;
     }
 
     public String getUsername() {
