@@ -5,5 +5,6 @@
 <h2>
     Hello ${username}
 </h2>
+${users}
 </body>
 </html>

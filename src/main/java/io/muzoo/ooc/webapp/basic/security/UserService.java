@@ -1,21 +1,37 @@
 package io.muzoo.ooc.webapp.basic.security;
-
-
 import lombok.Setter;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * UserService is used in too many places and we only need one instance of it so we will make it singleton
+ */
 public class UserService {
 
     private static final String INSERT_USER_SQL = "INSERT INTO tbl_user (username, password, display_name) VALUES (?, ?, ?);";
+    private static final String SELECT_USER_SQL = "SELECT * FROM tbl_user WHERE username = ?;";
+    private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM tbl_user;";
 
     @Setter
-    private MySQLDatabase database = new MySQLDatabase();
+    private static MySQLDatabase database = new MySQLDatabase();
 
-    public void createUser(String username, String password, String displayName) {
+    private static UserService service;
+
+    public UserService() {
+    }
+
+    public static UserService getInstance() {
+        if (service == null) {
+            service = new UserService();
+            UserService.setDatabase(MySQLDatabase.getInstance());
+        }
+        return service;
+    }
+
+    public void createUser(String username, String password, String displayName) throws UserServiceException {
         // password need to be hashed and salted so we will need bcrypt library
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
@@ -31,16 +47,89 @@ public class UserService {
 
             connection.setAutoCommit(false);
             connection.commit();
-            // TODO: check what happen if the user is duplicated
+            // check if the user is duplicated
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new UsernameNotUniqueException(String.format("Username %s has already been taken.", username));
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            throw new UserServiceException(throwables.getMessage());
         }
     }
 
-    public static void main(String[] args) {
-        UserService userService = new UserService();
-        userService.createUser("test3", "12345A", "Tom");
+    public User findByUsername(String username) {
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SELECT_USER_SQL);
+            ps.setString(1, username);
+            ResultSet resultSet = ps.executeQuery();
+            resultSet.next();
+            return new User(
+                    resultSet.getLong("id"),
+                    resultSet.getString("username"),
+                    resultSet.getString("password"),  // this is hashed password
+                    resultSet.getString("display_name")
+            );
+        } catch (SQLException throwables) {
+            return null;
+        }
     }
+
+    /**
+     * list all users in the database
+     * @return list of users, never return null
+     */
+    public List<User> findAll() {
+        List<User> users = new ArrayList<>();
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SELECT_ALL_USERS_SQL);
+            ResultSet resultSet = ps.executeQuery();
+
+            while(resultSet.next()) {
+                users.add(
+                        new User(
+                            resultSet.getLong("id"),
+                            resultSet.getString("username"),
+                            resultSet.getString("password"),
+                            resultSet.getString("display_name")
+                ));
+            }
+            return users;
+
+        } catch (SQLException throwables) {
+            return null;
+        }
+    }
+
+    public void deleteUserByUsername() {}
+
+    /**
+     * User can only change their display name when updating profile
+     * @param id
+     * @param displayName
+     */
+    public void updateUserById(long id, String displayName) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    /**
+     * Change password method is seperated from update user method because user normally
+     * never change password and update profile at the same time
+     * @param newPassword
+     */
+    public void changePassword(String newPassword) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    public static void main(String[] args) throws UserServiceException {
+        UserService userService = UserService.getInstance();
+        userService.createUser("admin", "123456", "Admin");
+//        userService.createUser("test3", "12345A", "Tom");
+//        User user = userService.findByUsername("test2");
+//        for(User user : userService.findAll()) {
+//            System.out.println(user.getUsername());
+//        }
+    }
+}
 
 //    private Map<String, User> users = new HashMap<>();
 //
@@ -56,5 +145,3 @@ public class UserService {
 //    public boolean checkIfUserExists(String username) {
 //        return users.containsKey(username);
 //    }
-
-}

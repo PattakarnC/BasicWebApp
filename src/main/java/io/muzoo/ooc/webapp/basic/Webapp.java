@@ -1,5 +1,8 @@
 package io.muzoo.ooc.webapp.basic;
 
+import io.muzoo.ooc.webapp.basic.security.MySQLDatabase;
+import io.muzoo.ooc.webapp.basic.security.SecurityService;
+import io.muzoo.ooc.webapp.basic.security.UserService;
 import io.muzoo.ooc.webapp.basic.servlets.ServletRouter;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
@@ -13,6 +16,9 @@ public class Webapp {
     public static void main(String[] args) {
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(8082);
+
+        SecurityService securityService  = new SecurityService();
+        securityService.setUserService(UserService.getInstance());
 
         File doceBase = new File("src/main/webapp/");
         doceBase.mkdirs();

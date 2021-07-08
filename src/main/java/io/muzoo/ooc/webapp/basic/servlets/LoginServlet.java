@@ -14,21 +14,24 @@ public class LoginServlet extends AbstractRoutableHttpServlet {
         requestDispatcher.include(request, response);
     }
 
-//    @Override
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        String error = "";
-//        // authentication
-//        if (securityService.login(request)) {
-//            response.sendRedirect("/");
-//        } else {
-//            error = "Username or password incorrect. Please try again.";
-//
-//            request.setAttribute("error", error);
-//            RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/login.jsp");
-//            requestDispatcher.include(request, response);
-//        }
-//
-//    }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String error = "";
+        // authentication
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        if (securityService.authenticate(username, password, request)) {
+            response.sendRedirect("/");
+        }
+        else {
+            error = "Username or password incorrect. Please try again.";
+
+            request.setAttribute("error", error);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/login.jsp");
+            requestDispatcher.include(request, response);
+        }
+
+    }
 
     @Override
     public String getPattern() {

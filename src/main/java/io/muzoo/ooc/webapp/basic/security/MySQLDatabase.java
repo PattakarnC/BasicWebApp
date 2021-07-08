@@ -5,7 +5,12 @@ import io.muzoo.ooc.webapp.basic.config.ConfigurationLoader;
 
 import java.sql.*;
 
+/**
+ * We will make this singleton too
+ */
 public class MySQLDatabase {
+
+    private static MySQLDatabase service;
 
     public Connection getConnection() {
         try {
@@ -27,6 +32,13 @@ public class MySQLDatabase {
         } catch (SQLException | ClassNotFoundException e) {
             return null;
         }
+    }
+
+    public static MySQLDatabase getInstance() {
+        if (service == null) {
+            service = new MySQLDatabase();
+        }
+        return service;
     }
 
 
