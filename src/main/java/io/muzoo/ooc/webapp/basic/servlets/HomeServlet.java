@@ -24,7 +24,6 @@ public class HomeServlet extends AbstractRoutableHttpServlet {
         } else {
             response.sendRedirect("/login");
         }
-
     }
 
     @Override
