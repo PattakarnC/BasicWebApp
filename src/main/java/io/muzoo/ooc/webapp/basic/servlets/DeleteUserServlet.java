@@ -20,6 +20,7 @@ public class DeleteUserServlet extends AbstractRoutableHttpServlet {
                 User currentUser = userService.findByUsername(username);
                 // we will delete user by username, so we need to get requested username from parameter
                 User deletingUser = userService.findByUsername(request.getParameter("username"));
+                System.out.println("fuck");
                 // let's prevent deleting own account. User cannot do it from ui but still can send request directly to server
                 if (currentUser.getUsername().equals(deletingUser.getUsername())) {
                     request.getSession().setAttribute("hasError", true);

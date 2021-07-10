@@ -24,7 +24,7 @@
                 </div>
             </c:when>
             <c:otherwise>
-                <div class="alert alert-danger" role="alert">
+                <div class="alert alert-success" role="alert">
                         ${message}
                 </div>
             </c:otherwise>
@@ -68,7 +68,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        Do you want to delete ${user.displayName} with username ${user.username}?
+                                        Do you want to delete <b>${user.displayName} (${user.username})</b>?
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

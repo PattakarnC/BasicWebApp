@@ -102,7 +102,7 @@ public class UserService {
     }
 
     /**
-     * Delete user by id.
+     * Delete user by user id.
      * @param username
      * @return true if successful
      */
@@ -112,9 +112,8 @@ public class UserService {
             PreparedStatement ps = connection.prepareStatement(DELETE_USER_SQL);
         ) {
             ps.setString(1, username);
-            int deleteCount = ps.executeUpdate();
-            connection.commit();
-            return deleteCount > 0;
+            ps.executeUpdate();
+            return true;
         }
          catch (SQLException throwables) {
             return false;
@@ -141,8 +140,8 @@ public class UserService {
 
     public static void main(String[] args) throws UserServiceException {
         UserService userService = UserService.getInstance();
-        userService.createUser("admin", "123456", "Admin");
-//        userService.createUser("test3", "12345A", "Tom");
+//        userService.createUser("admin", "123456", "Admin");
+        userService.createUser("test3", "12345", "Guy");
 //        User user = userService.findByUsername("test2");
 //        for(User user : userService.findAll()) {
 //            System.out.println(user.getUsername());
