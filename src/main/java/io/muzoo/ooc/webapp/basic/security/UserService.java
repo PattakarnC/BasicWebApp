@@ -16,7 +16,7 @@ public class UserService {
     private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM tbl_user;";
 
     @Setter
-    private static MySQLDatabase database = new MySQLDatabase();
+    private static MySQLDatabase database;
 
     private static UserService service;
 
