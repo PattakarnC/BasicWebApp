@@ -13,10 +13,10 @@ public class HomeServlet extends AbstractRoutableHttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (securityService.isAuthorized(request)) {
-            String username = securityService.getCurrentUsername(request);
-            request.setAttribute("username", username);
-
+            String username = (String) request.getSession().getAttribute("username");
             UserService userService = UserService.getInstance();
+
+            request.setAttribute("currentUser", userService.findByUsername(username));
             request.setAttribute("users", userService.findAll());
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/home.jsp");
