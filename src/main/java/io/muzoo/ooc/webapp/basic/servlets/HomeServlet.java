@@ -21,7 +21,14 @@ public class HomeServlet extends AbstractRoutableHttpServlet {
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/home.jsp");
             requestDispatcher.include(request, response);
+
+            // removing attributes as soon as they are used is known as flash session
+            request.getSession().removeAttribute("hasError");
+            request.getSession().removeAttribute("message");
         } else {
+            // just add some extra precaution to delete those two attributes
+            request.removeAttribute("hasError");
+            request.removeAttribute("message");
             response.sendRedirect("/login");
         }
     }
