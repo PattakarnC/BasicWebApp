@@ -1,5 +1,6 @@
 package io.muzoo.ooc.webapp.basic.servlets;
 
+import io.muzoo.ooc.webapp.basic.security.User;
 import io.muzoo.ooc.webapp.basic.security.UserService;
 import org.apache.commons.lang.StringUtils;
 
@@ -9,17 +10,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CreateUserServlet extends AbstractRoutableHttpServlet{
+public class ChangePasswordServlet extends AbstractRoutableHttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (securityService.isAuthorized(request)) {
-            String username = (String) request.getSession().getAttribute("username");
-//            UserService userService = UserService.getInstance();
-//
-            request.setAttribute("user", username);
+            String username = StringUtils.trim(request.getParameter("username"));
+            UserService userService = UserService.getInstance();
 
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/create.jsp");
+            // let's prefill the form
+            User user = userService.findByUsername(username);
+            request.setAttribute("user", user);
+            request.setAttribute("username", user.getUsername());
+
+            // if not success, it will arrive here
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/password.jsp");
             requestDispatcher.include(request, response);
 
             // removing attributes as soon as they are used is known as flash session
@@ -36,19 +41,17 @@ public class CreateUserServlet extends AbstractRoutableHttpServlet{
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (securityService.isAuthorized(request)) {
+            // change password is similar to edit user
             String username = StringUtils.trim(request.getParameter("username"));
-            String displayName = StringUtils.trim(request.getParameter("displayName"));
-            String password = StringUtils.trim(request.getParameter("password"));
-            String cpassword = StringUtils.trim(request.getParameter("cpassword"));
+            String password = request.getParameter("password");
+            String cpassword = request.getParameter("cpassword");
+
 
             UserService userService = UserService.getInstance();
             String errorMessage = null;
 
-            if (userService.findByUsername(username) != null) {
-                errorMessage = String.format("Username %s has already been taken.", username);
-            }
-            else if (StringUtils.isBlank(displayName)) {
-                errorMessage = "Display Name cannot be blank.";
+            if (userService.findByUsername(username) == null) {
+                errorMessage = String.format("Username %s does not exist.", username);
             }
             else if (StringUtils.isBlank(password)) {
                 errorMessage = "Password cannot be blank.";
@@ -62,12 +65,12 @@ public class CreateUserServlet extends AbstractRoutableHttpServlet{
                 request.getSession().setAttribute("message", errorMessage);
             }
             else {
-                // create user
+                // edit a user
                 try {
-                    userService.createUser(username, password, displayName);
+                    userService.changePassword(username, password);
                     // if no error redirect
                     request.getSession().setAttribute("hasError", false);
-                    request.getSession().setAttribute("message", String.format("Username %s has successfully created.", username));
+                    request.getSession().setAttribute("message", String.format("Password for user %s has successfully changed.", username));
                     response.sendRedirect("/");
                     return;
                 } catch (Exception e) {
@@ -76,14 +79,10 @@ public class CreateUserServlet extends AbstractRoutableHttpServlet{
                 }
 
             }
-            // let's prefill the form
             request.setAttribute("username", username);
-            request.setAttribute("displayName", displayName);
-            request.setAttribute("password", password);
-            request.setAttribute("cpassword", cpassword);
 
             // if not success, it will arrive here
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/create.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/password.jsp");
             requestDispatcher.include(request, response);
 
             // removing attributes as soon as they are used is known as flash session
@@ -99,7 +98,7 @@ public class CreateUserServlet extends AbstractRoutableHttpServlet{
 
     @Override
     public String getPattern() {
-        return "/user/create";
+        return "/user/password";
     }
 
 

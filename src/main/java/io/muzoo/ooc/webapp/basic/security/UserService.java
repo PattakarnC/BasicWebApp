@@ -15,6 +15,9 @@ public class UserService {
     private static final String SELECT_USER_SQL = "SELECT * FROM tbl_user WHERE username = ?;";
     private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM tbl_user;";
     private static final String DELETE_USER_SQL = "DELETE FROM tbl_user WHERE username = ?;";
+    private static final String UPDATE_USER_SQL = "UPDATE tbl_user SET display_name = ? WHERE username = ?;";
+    private static final String UPDATE_USER_PASSWORD_SQL = "UPDATE tbl_user SET password = ? WHERE username = ?;";
+
 
     @Setter
     private static MySQLDatabase database;
@@ -122,11 +125,24 @@ public class UserService {
 
     /**
      * User can only change their display name when updating profile
-     * @param id
+     * @param username
      * @param displayName
      */
-    public void updateUserById(long id, String displayName) {
-        throw new UnsupportedOperationException("not yet implemented");
+    public void updateUserByUsername(String username, String displayName) throws UserServiceException{
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement ps = connection.prepareStatement(UPDATE_USER_SQL);
+
+            ps.setString(1, displayName);
+            ps.setString(2, username);
+
+            ps.executeUpdate();
+
+            connection.setAutoCommit(false);
+            connection.commit();
+        } catch (SQLException throwables) {
+            throw new UserServiceException(throwables.getMessage());
+        }
     }
 
     /**
@@ -134,8 +150,21 @@ public class UserService {
      * never change password and update profile at the same time
      * @param newPassword
      */
-    public void changePassword(String newPassword) {
-        throw new UnsupportedOperationException("not yet implemented");
+    public void changePassword(String username, String newPassword) throws UserServiceException{
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement ps = connection.prepareStatement(UPDATE_USER_PASSWORD_SQL);
+
+            ps.setString(2, BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+            ps.setString(2, username);
+
+            ps.executeUpdate();
+
+            connection.setAutoCommit(false);
+            connection.commit();
+        } catch (SQLException throwables) {
+            throw new UserServiceException(throwables.getMessage());
+        }
     }
 
 //    public static void main(String[] args) throws UserServiceException {
