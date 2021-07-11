@@ -138,15 +138,15 @@ public class UserService {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-    public static void main(String[] args) throws UserServiceException {
-        UserService userService = UserService.getInstance();
+//    public static void main(String[] args) throws UserServiceException {
+//        UserService userService = UserService.getInstance();
 //        userService.createUser("admin", "123456", "Admin");
-        userService.createUser("test3", "12345", "Guy");
+//        userService.createUser("test3", "12345", "Guy");
 //        User user = userService.findByUsername("test2");
 //        for(User user : userService.findAll()) {
 //            System.out.println(user.getUsername());
 //        }
-    }
+//    }
 }
 
 //    private Map<String, User> users = new HashMap<>();

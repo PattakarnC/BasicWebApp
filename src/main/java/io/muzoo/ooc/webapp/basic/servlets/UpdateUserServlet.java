@@ -8,8 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class HomeServlet extends AbstractRoutableHttpServlet {
-
+public class UpdateUserServlet extends AbstractRoutableHttpServlet{
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (securityService.isAuthorized(request)) {
