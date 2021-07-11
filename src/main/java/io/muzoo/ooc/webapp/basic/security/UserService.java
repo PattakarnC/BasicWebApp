@@ -155,7 +155,7 @@ public class UserService {
             Connection connection = database.getConnection();
             PreparedStatement ps = connection.prepareStatement(UPDATE_USER_PASSWORD_SQL);
 
-            ps.setString(2, BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+            ps.setString(1, BCrypt.hashpw(newPassword, BCrypt.gensalt()));
             ps.setString(2, username);
 
             ps.executeUpdate();
