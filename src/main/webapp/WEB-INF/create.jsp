@@ -11,6 +11,14 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
+<style>
+    body {
+        background-image: url('https://wallpaperaccess.com/full/1943290.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+    }
+</style>
 <div class="container-fluid">
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="/">SSC - Login Webapp</a>
@@ -32,51 +40,46 @@
         </c:choose>
     </c:if>
 
-    <div class="row justify-content-md-center ">
-        <div class="col col-sm-12 col-md-6 col-lg-4 mt-5 ">
-            <h3 class="text-center mb-4" style="color:darkslategray">Create New User</h3>
-            </head>
+    <section class="h-100">
+        <div class="container h-100">
+            <div class="row justify-content-sm-center h-100">
+                <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9 my-auto">
+                    <div class="card shadow-lg">
+                        <div class="card-body p-5">
+                            <h1 class="fs-4 card-title fw-bold mb-4">Create New User</h1>
+                            <p>
+                                ${error}
+                            </p>
+                            <form action="/user/create" method="POST" autocomplete="off">
+                                <div class="mb-3">
+                                    <label class="mb-2 text-muted">Username</label>
+                                    <input type="text" name="username" class="form-control" value="${username}">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="mb-2 text-muted">Display Name</label>
+                                    <input type="text" name="displayName" class="form-control" value="${displayName}">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="mb-2 text-muted">Password</label>
+                                    <input type="password" name="password" class="form-control" value="${password}">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="mb-2 text-muted">Confirm Password</label>
+                                    <input type="password" name="cpassword" class="form-control" value="${cpassword}">
+                                </div>
 
-            <p>
-                ${error}
-            </p>
-            <form action="/user/create" method="post" autocomplete="off" >
-                <div class="input-group mb-4 input-group-md" >
-                    <span class="input-group-text "  id="username" style="width: 40px">
-                        <i class="fa fa-user"></i>
-                    </span>
-                    <input type="text" class="form-control " name="username" placeholder="Username" aria-label="Username"
-                           aria-describedby="username" autocomplete="off" value="${username}">
+                                <div class="d-flex align-items-center">
+                                    <button type="submit" class="btn btn-success ms-auto">
+                                        Create
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div class="input-group mb-4 input-group-md">
-                    <span class="input-group-text " id="display_name" style="width: 40px">
-                        <i class="fa fa-user-circle"></i>
-                    </span>
-                    <input type="text" class="form-control " name="displayName" placeholder="Display Name" aria-label="displayName"
-                           aria-describedby="displayName" autocomplete="off" value="${displayName}">
-                </div>
-
-                <div class="input-group mb-4 input-group-md">
-                    <span class="input-group-text " id="password" style="width: 40px">
-                        <i class="fa fa-key"></i>
-                    </span>
-                    <input type="password" class="form-control " name="password" placeholder="Password"
-                           aria-label="Password" aria-describedby="password" autocomplete="off" value="${password}"}>
-                </div>
-                <div class="input-group mb-4 input-group-md">
-                    <span class="input-group-text " id="cpassword" style="width: 40px">
-                        <i class="fa fa-check-circle"></i>
-                    </span>
-                    <input type="password" class="form-control " name="cpassword" placeholder=" Confirm Password"
-                           aria-label="Password" aria-describedby="cpassword" autocomplete="off" value="${cpassword}">
-                </div>
-                <div class="d-grid gap-2">
-                    <button class="btn btn-success" type="submit"><i class="fa fa-plus-square"></i> &nbsp; Create New User</button>
-                </div>
-            </form>
-
+            </div>
         </div>
-    </div>
+    </section>
 </div>
 
 </body>

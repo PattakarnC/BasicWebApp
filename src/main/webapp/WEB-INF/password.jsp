@@ -11,9 +11,17 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
+<style>
+    body {
+        background-image: url('https://wallpaperaccess.com/full/1943290.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+    }
+</style>
 <div class="container-fluid">
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="/">SSC - Login Webapp</a>
+        <a class="navbar-brand" href="/" >SSC - Login Webapp</a>
         <a class="btn btn-light btn-sm pull-right" type="button" href="/logout">
             <i class="fa fa-sign-out"></i> &nbsp; Logout</a>
     </nav>
@@ -32,36 +40,38 @@
         </c:choose>
     </c:if>
 
-    <div class="row justify-content-md-center ">
-        <div class="col col-sm-12 col-md-6 col-lg-4 mt-5 ">
-            <h3 class="text-center mb-4" style="color:darkslategray">Change Password (${username})</h3>
-            </head>
-            <p>
-                ${error}
-            </p>
-            <form action="/user/password?username=${username}" method="post" autocomplete="off" >
-                <div class="input-group mb-4 input-group-md">
-                    <span class="input-group-text " id="password" style="width: 40px">
-                        <i class="fa fa-key"></i>
-                    </span>
-                    <input type="password" class="form-control " name="password" placeholder="Password" aria-label="Password"
-                           aria-describedby="password" autocomplete="off" value="${password}">
-                </div>
-                <div class="input-group mb-4 input-group-md">
-                    <span class="input-group-text " id="displayName" style="width: 40px">
-                        <i class="fa fa-check-circle"></i>
-                    </span>
-                    <input type="password" class="form-control " name="cpassword" placeholder="Confirm Password" aria-label="Password"
-                           aria-describedby="cpassword" autocomplete="off" value="${cpassword}">
-                </div>
+    <section class="h-100">
+        <div class="container h-100">
+            <div class="row justify-content-sm-center h-100">
+                <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9 my-auto">
+                    <div class="card shadow-lg">
+                        <div class="card-body p-5">
+                            <h1 class="fs-4 card-title fw-bold mb-4">Change Password (${username})</h1>
+                            <p>
+                                ${error}
+                            </p>
+                            <form action="/user/password?username=${username}" method="POST" autocomplete="off">
+                                <div class="mb-3">
+                                    <label class="mb-2 text-muted">Password</label>
+                                    <input type="password" name="password" class="form-control" value="${password}">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="mb-2 text-muted">Confirm Password</label>
+                                    <input type="password" name="cpassword" class="form-control" value="${cpassword}">
+                                </div>
 
-                <div class="d-grid gap-2">
-                    <button class="btn btn-success" type="submit"><i class="fa fa-save"></i> &nbsp; Save</button>
+                                <div class="d-flex align-items-center">
+                                    <button type="submit" class="btn btn-success ms-auto">
+                                        Save
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            </form>
-
+            </div>
         </div>
-    </div>
+    </section>
 
 </div>
 

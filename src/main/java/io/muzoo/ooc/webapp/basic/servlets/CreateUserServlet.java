@@ -15,8 +15,7 @@ public class CreateUserServlet extends AbstractRoutableHttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (securityService.isAuthorized(request)) {
             String username = (String) request.getSession().getAttribute("username");
-//            UserService userService = UserService.getInstance();
-//
+
             request.setAttribute("user", username);
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/create.jsp");
@@ -46,6 +45,9 @@ public class CreateUserServlet extends AbstractRoutableHttpServlet{
 
             if (userService.findByUsername(username) != null) {
                 errorMessage = String.format("Username %s has already been taken.", username);
+            }
+            else if (StringUtils.isBlank(username)) {
+                errorMessage = "Username cannot be blank.";
             }
             else if (StringUtils.isBlank(displayName)) {
                 errorMessage = "Display Name cannot be blank.";

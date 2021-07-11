@@ -1,28 +1,5 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--<html>--%>
-<%--<head>--%>
-<%--    <title>Login Page</title>--%>
-<%--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">--%>
-<%--    <link> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">--%>
-<%--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>--%>
-<%--</head>--%>
-<%--<body>--%>
-<%--<h2>--%>
-<%--    Login--%>
-<%--</h2>--%>
-<%--<p>--%>
-<%--    ${error}--%>
-<%--</p>--%>
-<%--<p>--%>
-<%--<form action="/login" method="post">--%>
-<%--    <input type="text" placeholder="Enter Username" name="username" required><br>--%>
-<%--    <input type="password" placeholder="Enter Password" name="password" required><br>--%>
-<%--    <button type="submit">Login</button>--%>
-<%--</form>--%>
-<%--</p>--%>
-<%--</body>--%>
-<%--</html>--%>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,6 +10,8 @@
 </head>
 
 <body>
+<jsp:useBean id="dateValue" class="java.util.Date" />
+<fmt:formatDate value="${dateValue}" pattern="yyyy-MM-dd HH:mm:ss"/>
 <section class="h-100">
     <div class="container h-100">
         <div class="row justify-content-sm-center h-100">
