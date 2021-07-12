@@ -79,6 +79,7 @@ public class UserService {
 
     /**
      * list all users in the database
+     *
      * @return list of users, never return null
      */
     public List<User> findAll() {
@@ -88,14 +89,14 @@ public class UserService {
             PreparedStatement ps = connection.prepareStatement(SELECT_ALL_USERS_SQL);
             ResultSet resultSet = ps.executeQuery();
 
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 users.add(
                         new User(
-                            resultSet.getLong("id"),
-                            resultSet.getString("username"),
-                            resultSet.getString("password"),
-                            resultSet.getString("display_name")
-                ));
+                                resultSet.getLong("id"),
+                                resultSet.getString("username"),
+                                resultSet.getString("password"),
+                                resultSet.getString("display_name")
+                        ));
             }
             return users;
 
@@ -106,29 +107,30 @@ public class UserService {
 
     /**
      * Delete user by user id.
+     *
      * @param username
      * @return true if successful
      */
     public boolean deleteUserByUsername(String username) {
         try (
-            Connection connection = database.getConnection();
-            PreparedStatement ps = connection.prepareStatement(DELETE_USER_SQL);
+                Connection connection = database.getConnection();
+                PreparedStatement ps = connection.prepareStatement(DELETE_USER_SQL);
         ) {
             ps.setString(1, username);
             ps.executeUpdate();
             return true;
-        }
-         catch (SQLException throwables) {
+        } catch (SQLException throwables) {
             return false;
         }
     }
 
     /**
      * User can only change their display name when updating profile
+     *
      * @param username
      * @param displayName
      */
-    public void updateUserByUsername(String username, String displayName) throws UserServiceException{
+    public void updateUserByUsername(String username, String displayName) throws UserServiceException {
         try {
             Connection connection = database.getConnection();
             PreparedStatement ps = connection.prepareStatement(UPDATE_USER_SQL);
@@ -148,9 +150,10 @@ public class UserService {
     /**
      * Change password method is seperated from update user method because user normally
      * never change password and update profile at the same time
+     *
      * @param newPassword
      */
-    public void changePassword(String username, String newPassword) throws UserServiceException{
+    public void changePassword(String username, String newPassword) throws UserServiceException {
         try {
             Connection connection = database.getConnection();
             PreparedStatement ps = connection.prepareStatement(UPDATE_USER_PASSWORD_SQL);
@@ -166,29 +169,4 @@ public class UserService {
             throw new UserServiceException(throwables.getMessage());
         }
     }
-
-//    public static void main(String[] args) throws UserServiceException {
-//        UserService userService = UserService.getInstance();
-//        userService.createUser("admin", "123456", "Admin");
-//        userService.createUser("test3", "12345", "Guy");
-//        User user = userService.findByUsername("test2");
-//        for(User user : userService.findAll()) {
-//            System.out.println(user.getUsername());
-//        }
-//    }
 }
-
-//    private Map<String, User> users = new HashMap<>();
-//
-//    {
-//        users.put("gigadot", new User("gigadot", "12345"));
-//        users.put("admin", new User("admin", "12345"));
-//    }
-//
-//    public User findByUsername(String username) {
-//        return users.get(username);
-//    }
-//
-//    public boolean checkIfUserExists(String username) {
-//        return users.containsKey(username);
-//    }
